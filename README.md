@@ -5,15 +5,17 @@ Render 2D/3D drawing on Pubnub [Draw On My Face Canvas](https://stephenlb.github
 ## Usage
 
 ```js
-const Canvas = require('./source/index.js'); // or './source/true-canvas.js'
+const Canvas = require('./source/true-canvas.js');
 
 const bot = new Canvas.Artist({ style: '#ff0000' });
 await bot.drawLine({ x: 0.1, y: 0.1 }, { x: 0.9, y: 0.9 });
 ```
 
-## Project structure
+## Notes
 
-The engine core is modularized by responsibility:
+You don't need to understand all the things here, all you need to do is just knowing how to use `Canvas.Artist` properly. You can also look into the [Examples](example) folder to see all example of how it works!
+
+## Project structure
 
 ```
 source/
@@ -47,9 +49,3 @@ source/
     artist.js               Artist — composes shapes + font + PublishQueue into a
                              chainable draw*() API
 ```
-
-Each module can be required directly (e.g. `require('./source/core/vec2.js')`)
-for lighter-weight usage, or via `source/index.js` for the full API surface.
-`source/true-canvas.js` is kept as a compatibility shim so existing code that
-does `require('./source/true-canvas.js')` (as the `example/` scripts do)
-keeps working unchanged.
