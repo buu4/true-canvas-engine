@@ -1,23 +1,19 @@
-/**
- * font/renderer.js — converts vector-font glyph definitions into pixel-space
- * stroke points for drawing.
- */
+// font/renderer.js — converts vector-font glyph definitions into pixel-space
+// stroke points for drawing.
 
 'use strict';
 
 const { Vec2 } = require('../core/vec2.js');
 const { GLYPHS } = require('./glyphs.js');
 
-/**
- * Compute the points for a single text stroke, scaled and translated.
- *
- * @param {number[][]} rawPts  Array of [x, y] pairs in glyph local space.
- * @param {number}     ox      X offset (pixels).
- * @param {number}     oy      Y offset (pixels).
- * @param {number}     scale   Font size (pixels).
- * @param {number}     strokeSteps  Interpolation steps per segment.
- * @returns {Vec2[]}  Pixel-space points.
- */
+// Compute the points for a single text stroke, scaled and translated.
+//
+// @param {number[][]} rawPts  Array of [x, y] pairs in glyph local space.
+// @param {number}     ox      X offset (pixels).
+// @param {number}     oy      Y offset (pixels).
+// @param {number}     scale   Font size (pixels).
+// @param {number}     strokeSteps  Interpolation steps per segment.
+// @returns {Vec2[]}  Pixel-space points.
 function _glyphStrokePoints(rawPts, ox, oy, scale, strokeSteps = 5) {
     const out = [];
     for (let i = 0; i < rawPts.length - 1; i++) {
@@ -33,16 +29,14 @@ function _glyphStrokePoints(rawPts, ox, oy, scale, strokeSteps = 5) {
     return out;
 }
 
-/**
- * Get all pixel-space points for a single character glyph.
- *
- * @param {string} ch           The character.
- * @param {number} ox           X origin (pixels).
- * @param {number} oy           Y origin (pixels).
- * @param {number} [size=42]    Font size (pixels).
- * @param {number} [steps=5]    Interpolation steps per stroke segment.
- * @returns {{ strokes: Vec2[][] }}  One array of points per stroke.
- */
+// Get all pixel-space points for a single character glyph.
+//
+// @param {string} ch           The character.
+// @param {number} ox           X origin (pixels).
+// @param {number} oy           Y origin (pixels).
+// @param {number} [size=42]    Font size (pixels).
+// @param {number} [steps=5]    Interpolation steps per stroke segment.
+// @returns {{ strokes: Vec2[][] }}  One array of points per stroke.
 function glyphStrokes(ch, ox, oy, size = 42, steps = 5) {
     const key = ch.toUpperCase();
     const def  = GLYPHS[key] ?? GLYPHS[' '];

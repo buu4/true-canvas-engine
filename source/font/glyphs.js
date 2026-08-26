@@ -1,8 +1,6 @@
-/**
- * font/glyphs.js — stroke-based vector font glyph definitions.
- * Each glyph is an array of strokes; each stroke is an array of [x, y] pairs
- * in a 0..1 × 0..1 local coordinate space.
- */
+// font/glyphs.js — stroke-based vector font glyph definitions.
+// Each glyph is an array of strokes; each stroke is an array of [x, y] pairs
+// in a 0..1 × 0..1 local coordinate space.
 
 'use strict';
 

@@ -1,6 +1,4 @@
-/**
- * shapes/index.js — barrel module re-exporting all shape/curve generators.
- */
+// barrel module re-exporting all shape/curve generators.
 
 'use strict';
 

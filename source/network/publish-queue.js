@@ -1,31 +1,25 @@
-/**
- * network/publish-queue.js — concurrent worker pool with batching, retry, monitoring.
- */
+// network/publish-queue.js — concurrent worker pool with batching, retry, monitoring.
 
 'use strict';
 
 const { sleep } = require('../core/math.js');
 
-/**
- * Manages a pool of concurrent publish workers with:
- *  - configurable concurrency
- *  - true auto-batching (multiple points per HTTP request)
- *  - exponential backoff retry with optional rate-limit detection
- *  - event callbacks: onRateLimit, onError, onFlush
- *  - live status metrics: pending, active, failed, sent counts
- */
+// Manages a pool of concurrent publish workers with:
+//  - configurable concurrency
+//  - true auto-batching (multiple points per HTTP request)
+//  - exponential backoff retry with optional rate-limit detection
+//  - event callbacks: onRateLimit, onError, onFlush
+//  - live status metrics: pending, active, failed, sent counts
 class PublishQueue {
-    /**
-     * @param {object}   pubnub
-     * @param {object}  [opts]
-     * @param {number}  [opts.concurrency=8]     Max simultaneous in-flight publishes.
-     * @param {number}  [opts.batchSize=1]       Points per publish call.
-     * @param {number}  [opts.maxRetries=3]      Retry attempts before giving up a job.
-     * @param {number}  [opts.retryBaseMs=200]   Base delay for exponential backoff.
-     * @param {Function} [opts.onRateLimit]      Called with the rate-limit error when a 429 is detected.
-     * @param {Function} [opts.onError]          Called with (error, jobs) for unrecoverable failures.
-     * @param {Function} [opts.onFlush]          Called each time the queue drains to empty.
-     */
+    // @param {object}   pubnub
+    // @param {object}  [opts]
+    // @param {number}  [opts.concurrency=8]     Max simultaneous in-flight publishes.
+    // @param {number}  [opts.batchSize=1]       Points per publish call.
+    // @param {number}  [opts.maxRetries=3]      Retry attempts before giving up a job.
+    // @param {number}  [opts.retryBaseMs=200]   Base delay for exponential backoff.
+    // @param {Function} [opts.onRateLimit]      Called with the rate-limit error when a 429 is detected.
+    // @param {Function} [opts.onError]          Called with (error, jobs) for unrecoverable failures.
+    // @param {Function} [opts.onFlush]          Called each time the queue drains to empty.
     constructor(pubnub, {
         concurrency  = 8,
         batchSize    = 1,
@@ -53,12 +47,10 @@ class PublishQueue {
         this.stats = { pending: 0, active: 0, sent: 0, failed: 0 };
     }
 
-    /**
-     * Enqueue a single publish job.
-     * @param {string} channel
-     * @param {object} message
-     * @returns {Promise<void>}  Resolves when published; rejects on unrecoverable error.
-     */
+    // Enqueue a single publish job.
+    // @param {string} channel
+    // @param {object} message
+    // @returns {Promise<void>}  Resolves when published; rejects on unrecoverable error.
     push(channel, message) {
         return new Promise((resolve, reject) => {
             if (this._aborted) { reject(new Error('queue aborted')); return; }
@@ -68,17 +60,15 @@ class PublishQueue {
         });
     }
 
-    /**
-     * Enqueue multiple messages at once (bypasses individual push overhead).
-     * @param {string}   channel
-     * @param {object[]} messages
-     * @returns {Promise<void>[]}
-     */
+    // Enqueue multiple messages at once (bypasses individual push overhead).
+    // @param {string}   channel
+    // @param {object[]} messages
+    // @returns {Promise<void>[]}
     pushBatch(channel, messages) {
         return messages.map(msg => this.push(channel, msg));
     }
 
-    /** Abort all pending jobs and reject their promises. */
+    // Abort all pending jobs and reject their promises.
     abort() {
         this._aborted = true;
         const pending = this._queue.splice(0);
@@ -87,16 +77,14 @@ class PublishQueue {
         this._checkIdle();
     }
 
-    /** Reset aborted state so the queue can accept new jobs. */
+    // Reset aborted state so the queue can accept new jobs.
     reset() {
         this._aborted = false;
         this.stats = { pending: 0, active: 0, sent: 0, failed: 0 };
     }
 
-    /**
-     * Wait until the queue is fully drained (all pending + in-flight jobs done).
-     * @returns {Promise<void>}
-     */
+    // Wait until the queue is fully drained (all pending + in-flight jobs done).
+    // @returns {Promise<void>}
     flush() {
         if (this._active === 0 && this._queue.length === 0) return Promise.resolve();
         return new Promise(resolve => this._idleWaiters.push(resolve));

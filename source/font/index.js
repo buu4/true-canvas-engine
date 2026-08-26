@@ -1,6 +1,4 @@
-/**
- * font/index.js — barrel module for the vector font (glyph data + renderer).
- */
+// font/index.js — barrel module for the vector font (glyph data + renderer).
 
 'use strict';
 

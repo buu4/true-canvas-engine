@@ -1,22 +1,16 @@
-/**
- * core/vec3.js — 3-D vector with projection helpers.
- */
+// core/vec3.js — 3-D vector with projection helpers.
 
 'use strict';
 
 const { lerp } = require('./math.js');
 const { Vec2 } = require('./vec2.js');
 
-/**
- * 3-D vector with common operations and built-in 3-D→2-D projection.
- * All arithmetic methods return a new Vec3 (non-mutating).
- */
+// 3-D vector with common operations and built-in 3-D→2-D projection.
+// All arithmetic methods return a new Vec3 (non-mutating).
 class Vec3 {
-    /**
-     * @param {number} [x=0]
-     * @param {number} [y=0]
-     * @param {number} [z=0]
-     */
+    // @param {number} [x=0]
+    // @param {number} [y=0]
+    // @param {number} [z=0]
     constructor(x = 0, y = 0, z = 0) {
         this.x = x;
         this.y = y;
@@ -49,44 +43,36 @@ class Vec3 {
 
     lerp(v, t) { return new Vec3(lerp(this.x, v.x, t), lerp(this.y, v.y, t), lerp(this.z, v.z, t)); }
 
-    /**
-     * Rotate around the X axis by `angle` radians.
-     * @param {number} angle
-     */
+    // Rotate around the X axis by `angle` radians.
+    // @param {number} angle
     rotateX(angle) {
         const cos = Math.cos(angle);
         const sin = Math.sin(angle);
         return new Vec3(this.x, this.y * cos - this.z * sin, this.y * sin + this.z * cos);
     }
 
-    /**
-     * Rotate around the Y axis by `angle` radians.
-     * @param {number} angle
-     */
+    // Rotate around the Y axis by `angle` radians.
+    // @param {number} angle
     rotateY(angle) {
         const cos = Math.cos(angle);
         const sin = Math.sin(angle);
         return new Vec3(this.x * cos + this.z * sin, this.y, -this.x * sin + this.z * cos);
     }
 
-    /**
-     * Rotate around the Z axis by `angle` radians.
-     * @param {number} angle
-     */
+    // Rotate around the Z axis by `angle` radians.
+    // @param {number} angle
     rotateZ(angle) {
         const cos = Math.cos(angle);
         const sin = Math.sin(angle);
         return new Vec3(this.x * cos - this.y * sin, this.x * sin + this.y * cos, this.z);
     }
 
-    /**
-     * Perspective projection onto a 2-D plane.
-     * Returns a Vec2 in canvas-pixel space, centered at `center`.
-     *
-     * @param {{ x: number, y: number }} center  Pixel-space origin (e.g. { x: 500, y: 500 }).
-     * @param {number} [fovDistance=600]          Camera-to-projection-plane distance.
-     * @returns {Vec2}
-     */
+    // Perspective projection onto a 2-D plane.
+    // Returns a Vec2 in canvas-pixel space, centered at `center`.
+    //
+    // @param {{ x: number, y: number }} center  Pixel-space origin (e.g. { x: 500, y: 500 }).
+    // @param {number} [fovDistance=600]          Camera-to-projection-plane distance.
+    // @returns {Vec2}
     project(center, fovDistance = 600) {
         const scale = fovDistance / (fovDistance + this.z);
         return new Vec2(center.x + this.x * scale, center.y + this.y * scale);

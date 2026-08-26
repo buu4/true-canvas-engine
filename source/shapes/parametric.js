@@ -1,23 +1,19 @@
-/**
- * shapes/parametric.js — parametric curve generators.
- * Each function returns an array of Vec2 (normalized or pixel, depending on args).
- */
+// parametric curve generators.
+// Each function returns an array of Vec2 (normalized or pixel, depending on args).
 
 'use strict';
 
 const { lerp } = require('../core/math.js');
 const { Vec2 } = require('../core/vec2.js');
 
-/**
- * Spiral (Archimedean).
- *
- * @param {{ x, y }} center
- * @param {number}   startRadius
- * @param {number}   endRadius
- * @param {number}  [turns=3]
- * @param {number}  [steps=180]
- * @returns {Vec2[]}
- */
+// Spiral (Archimedean).
+//
+// @param {{ x, y }} center
+// @param {number}   startRadius
+// @param {number}   endRadius
+// @param {number}  [turns=3]
+// @param {number}  [steps=180]
+// @returns {Vec2[]}
 function spiralPoints(center, startRadius, endRadius, turns = 3, steps = 180) {
     const c = Vec2.from(center);
     const totalAngle = turns * Math.PI * 2;
@@ -31,18 +27,16 @@ function spiralPoints(center, startRadius, endRadius, turns = 3, steps = 180) {
     return pts;
 }
 
-/**
- * Lissajous curve.
- *
- * @param {{ x, y }} center
- * @param {number}   rx         Horizontal amplitude.
- * @param {number}   ry         Vertical amplitude.
- * @param {number}  [freqX=3]
- * @param {number}  [freqY=2]
- * @param {number}  [phase=Math.PI/2]
- * @param {number}  [steps=180]
- * @returns {Vec2[]}
- */
+// Lissajous curve.
+//
+// @param {{ x, y }} center
+// @param {number}   rx         Horizontal amplitude.
+// @param {number}   ry         Vertical amplitude.
+// @param {number}  [freqX=3]
+// @param {number}  [freqY=2]
+// @param {number}  [phase=Math.PI/2]
+// @param {number}  [steps=180]
+// @returns {Vec2[]}
 function lissajousPoints(center, rx, ry, freqX = 3, freqY = 2, phase = Math.PI / 2, steps = 180) {
     const c = Vec2.from(center);
     const pts = [];
@@ -53,15 +47,13 @@ function lissajousPoints(center, rx, ry, freqX = 3, freqY = 2, phase = Math.PI /
     return pts;
 }
 
-/**
- * Rose curve (rhodonea).
- *
- * @param {{ x, y }} center
- * @param {number}   radius
- * @param {number}  [k=3]       Petal count (odd k → k petals, even k → 2k petals).
- * @param {number}  [steps=360]
- * @returns {Vec2[]}
- */
+// Rose curve (rhodonea).
+//
+// @param {{ x, y }} center
+// @param {number}   radius
+// @param {number}  [k=3]       Petal count (odd k → k petals, even k → 2k petals).
+// @param {number}  [steps=360]
+// @returns {Vec2[]}
 function rosePoints(center, radius, k = 3, steps = 360) {
     const c = Vec2.from(center);
     const pts = [];
@@ -74,14 +66,12 @@ function rosePoints(center, radius, k = 3, steps = 360) {
     return pts;
 }
 
-/**
- * Heart curve (parametric).
- *
- * @param {{ x, y }} center
- * @param {number}   size      Scale factor (pixels or normalized units).
- * @param {number}  [steps=120]
- * @returns {Vec2[]}
- */
+// Heart curve (parametric).
+//
+// @param {{ x, y }} center
+// @param {number}   size      Scale factor (pixels or normalized units).
+// @param {number}  [steps=120]
+// @returns {Vec2[]}
 function heartPoints(center, size, steps = 120) {
     const c = Vec2.from(center);
     const pts = [];
