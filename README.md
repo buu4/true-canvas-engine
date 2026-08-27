@@ -19,12 +19,20 @@ You don't need to understand all the things here, all you need to do is just kno
 
 ```
 source/
-  true-canvas.j           Public API entry point (re-exports everything below)
-  pubnub.js               PubNub transport client (SSE subscribe / publish / history)
+  Public API:
 
-  core/                  Framework-agnostic primitives
-  shapes/                Point generators    each returns Vec2[]
-  font/                  Built-in stroke-based vector font
-  network/               Transport-layer concerns
-  bot/                   The public drawing bot
+    true-canvas.j           Public API entry point (re-exports everything below)
+    pubnub.js               PubNub transport client (SSE subscribe / publish / history)
+
+  Computation:
+
+    core/                  Framework-agnostic primitives
+    shapes/                Point generators    each returns Vec2[]
+    font/                  Built-in stroke-based vector font
+    network/               Transport-layer concerns
+
+  The public drawing bot artists, this folder is where
+  all drawing logic and API is:
+  
+    bot/
 ```

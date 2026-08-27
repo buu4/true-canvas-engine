@@ -130,22 +130,38 @@ class Artist {
      * @param {{ x, y }} coords   Normalized (default) or pixel if `pixels: true`.
      * @param {object}  [opts]
      * @param {boolean} [opts.pixels=false]
-     * @param {string}  [opts.style]     Override color for this point only.
+     * @param {string}  [opts.style]       Override color for this point only.
+     * @param {object}  [opts._ctx]        Internal: isolated path context (userId, seq).
      * @returns {Promise<void>}
      */
-    send(coords, { pixels = false, style } = {}) {
+    send(coords, { pixels = false, style, _ctx } = {}) {
         const pt = pixels ? this.toNormalized(coords) : coords;
-        this._seq++;
+        // Use isolated context when provided (concurrent drawPath), else fall back to shared state.
+        const ctx = _ctx ?? this;
+        ctx._seq++;
         return this._queue.push(this.channel, {
-            userId: this.userId,
+            userId: ctx.userId,
             style:  style ?? this.style,
             x:      pt.x,
             y:      pt.y,
-            seq:    this._seq,
+            seq:    ctx._seq,
         });
     }
 
     //  Path drawing
+
+    /**
+     * Allocate an isolated path context so concurrent drawPath calls
+     * do not share userId, seq, or strokeToggle with each other.
+     * @returns {{ userId: string, _seq: number }}
+     */
+    _allocPathCtx() {
+        this._pathCounter++;
+        return {
+            userId: `${this._baseUserId}-${this._pathCounter}`,
+            _seq:   0,
+        };
+    }
 
     /**
      * Draw a sequence of pre-computed points.
@@ -156,18 +172,27 @@ class Artist {
      * @param {number}  [opts.delayMs]              Per-point delay override.
      * @param {boolean} [opts.uniqueUserId]         Force a new userId for this path.
      * @param {string}  [opts.style]                Color override for this path.
+     * @param {object}  [opts._ctx]                 Internal: pre-allocated path context.
      * @returns {Promise<void>}
      */
-    async drawPath(points, { pixels = false, delayMs, uniqueUserId, style } = {}) {
+    async drawPath(points, { pixels = false, delayMs, uniqueUserId, style, _ctx } = {}) {
         const useUnique = uniqueUserId ?? this.uniqueUserIdPerPath;
-        if (useUnique) this.nextUserId();
+
+        // Each path gets its own isolated context (userId + seq counter) so
+        // concurrent calls via drawParallel never corrupt each other's state.
+        const ctx = _ctx ?? (useUnique ? this._allocPathCtx() : this);
+        if (!_ctx && useUnique) {
+            // Keep this.userId/seq in sync for callers that read them directly.
+            this.userId = ctx.userId;
+            this._seq   = 0;
+        }
 
         this._strokeToggle = !this._strokeToggle;
         const drawStyle = style ?? Color.nudge(this.style, this._strokeToggle);
         const delay     = delayMs ?? this.pointDelayMs;
 
         for (const p of points) {
-            this.send(p, { pixels, style: drawStyle });
+            this.send(p, { pixels, style: drawStyle, _ctx: ctx });
             if (delay > 0) await sleep(delay);
         }
 
@@ -176,6 +201,25 @@ class Artist {
 
     // Abort all pending work.
     abort() { this._queue.abort(); }
+
+    /**
+     * Run multiple draw calls in parallel, each with its own isolated path context.
+     * All draws share the same underlying PublishQueue so concurrency is still governed
+     * by the queue's worker pool — this only removes the serial wait between paths.
+     *
+     * @param {Array<() => Promise<void>>} fns  Array of zero-argument async draw callbacks.
+     * @returns {Promise<void>}  Resolves when every draw has flushed.
+     *
+     * @example
+     * await artist.drawParallel([
+     *     () => artist.drawCircle(center, 0.3),
+     *     () => artist.drawRect({ x: 0.1, y: 0.1 }, 0.2, 0.4),
+     *     () => artist.drawLine(p0, p1),
+     * ]);
+     */
+    async drawParallel(fns) {
+        await Promise.all(fns.map(fn => fn()));
+    }
 
     //  Shape drawing API
 
@@ -510,20 +554,20 @@ class Artist {
     * @returns {Promise<void>}
     */
     async drawWireframe(vertices, edges, center, opts = {}) {
-        const fov = opts.fov ?? 600;
+        const fov     = opts.fov ?? 600;
         const spacing = opts.spacing ?? 25;
-        const proj = vertices.map(v => v.project(center, fov));
+        const proj    = vertices.map(v => v.project(center, fov));
 
-        for (const [i, j, edgeOpts = {}] of edges) {
-            if (proj[i] && proj[j]) {
-                await this.drawLine(proj[i], proj[j], {
+        await this.drawParallel(
+            edges
+                .filter(([i, j]) => proj[i] && proj[j])
+                .map(([i, j, edgeOpts = {}]) => () => this.drawLine(proj[i], proj[j], {
                     pixels: true,
                     spacing,
                     ...opts,
-                    ...edgeOpts
-                });
-            }
-        }
+                    ...edgeOpts,
+                }))
+        );
     }
 }
 
