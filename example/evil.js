@@ -61,12 +61,10 @@ async function main() {
         pointDelayMs:        0,
     });
 
-    console.log('=== Evil Bot: Started ===');
-    console.log('Press Ctrl+C to stop.');
+    console.log('Evil Bot Started ');
 
     let count = 1;
     while (true) {
-        console.log(`[Loop ${count}] Drawing evil face...`);
         await drawEvilFace(bot);
         count++;
     }

@@ -5,7 +5,7 @@ const Canvas = require('../source/true-canvas.js');
 
 const CANVAS_W   = 1000;
 const CANVAS_H   = 1000;
-const LOOP_DELAY = 1200;
+const LOOP_DELAY = 3800;
 
 function roundedBoxSegments(x, y, w, h, r) {
     return [

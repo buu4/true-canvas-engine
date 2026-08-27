@@ -7,7 +7,7 @@ const CANVAS_W     = 1000;
 const CANVAS_H     = 1000;
 const CENTER_POS   = { x: 500, y: 500 };
 const FOV_DISTANCE = 500;
-const LOOP_DELAY   = 1200;
+const LOOP_DELAY   = 3800;
 
 class TimePRNG {
     constructor(seed = BigInt(Date.now())) {

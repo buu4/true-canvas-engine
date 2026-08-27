@@ -6,7 +6,7 @@ const CANVAS_H = 1000;
 const CENTER_POS = { x: 820, y: 180 };
 const PYRAMID_SIZE = 80;
 const FOV_DISTANCE = 400;
-const LOOP_DELAY = 2800;
+const LOOP_DELAY = 3800;
 
 const BASE_VERTICES = [
     new Canvas.Vec3(0, -PYRAMID_SIZE, 0),
