@@ -5,7 +5,6 @@ const Canvas = require('../source/true-canvas.js');
 
 const CANVAS_W   = 1000;
 const CANVAS_H   = 1000;
-const LOOP_DELAY = 3800;
 
 function roundedBoxSegments(x, y, w, h, r) {
     return [
@@ -59,7 +58,6 @@ async function main() {
         await bot.drawText('PUBNUB', { x: 340, y: 560, fontSize: 50, style: '#E62B1E' });
 
         frame++;
-        await Canvas.sleep(LOOP_DELAY);
     }
 }
 

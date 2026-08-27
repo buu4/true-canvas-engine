@@ -6,7 +6,6 @@ const Canvas = require('../source/true-canvas.js');
 
 const CANVAS_W   = 1000;
 const CANVAS_H   = 1000;
-const LOOP_DELAY = 1000;
 
 function prompt(question) {
     const rl = readline.createInterface({ input: process.stdin, output: process.stdout });
@@ -45,8 +44,6 @@ async function main() {
             canvasHeight: CANVAS_H,
             style: color,
         });
-
-        Canvas.sleep(LOOP_DELAY);
     }
 }
 
