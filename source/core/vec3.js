@@ -1,11 +1,11 @@
-// core/vec3.js — 3-D vector with projection helpers.
+// core/vec3.js    3-D vector with projection helpers.
 
 'use strict';
 
 const { lerp } = require('./math.js');
 const { Vec2 } = require('./vec2.js');
 
-// 3-D vector with common operations and built-in 3-D→2-D projection.
+// 3-D vector with common operations and built-in 3-D->2-D projection.
 // All arithmetic methods return a new Vec3 (non-mutating).
 class Vec3 {
     // @param {number} [x=0]

@@ -1,4 +1,4 @@
-// core/math.js — scalar math helpers shared across the engine.
+// core/math.js    scalar math helpers shared across the engine.
 
 'use strict';
 
@@ -27,12 +27,12 @@ const sleep = (ms) => new Promise(r => setTimeout(r, ms));
 // @returns {number}
 const lerp = (a, b, t) => a + (b - a) * t;
 
-// Degrees → radians.
+// Degrees -> radians.
 // @param {number} deg
 // @returns {number}
 const toRad = (deg) => (deg * Math.PI) / 180;
 
-// Radians → degrees.
+// Radians -> degrees.
 // @param {number} rad
 // @returns {number}
 const toDeg = (rad) => (rad * 180) / Math.PI;

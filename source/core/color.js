@@ -1,4 +1,4 @@
-// core/color.js — hex color utilities.
+// core/color.js    hex color utilities.
 
 'use strict';
 
@@ -12,7 +12,7 @@ const Color = {
         return '#' + Math.floor(Math.random() * 0xffffff).toString(16).padStart(6, '0');
     },
 
-    // Parse `'#rrggbb'` → `{ r, g, b }` (0-255 integers).
+    // Parse `'#rrggbb'` -> `{ r, g, b }` (0-255 integers).
     // @param {string} hex
     // @returns {{ r: number, g: number, b: number }}
     hexToRgb(hex) {
@@ -20,7 +20,7 @@ const Color = {
         return { r: (n >> 16) & 255, g: (n >> 8) & 255, b: n & 255 };
     },
 
-    // `{ r, g, b }` → `'#rrggbb'`.
+    // `{ r, g, b }` -> `'#rrggbb'`.
     // @param {{ r: number, g: number, b: number }} rgb
     // @returns {string}
     rgbToHex({ r, g, b }) {
@@ -41,7 +41,7 @@ const Color = {
         });
     },
 
-    // HSL → `'#rrggbb'`.
+    // HSL -> `'#rrggbb'`.
     // @param {number} h  Hue 0..360.
     // @param {number} s  Saturation 0..100.
     // @param {number} l  Lightness 0..100.
@@ -56,7 +56,7 @@ const Color = {
         return `#${f(0)}${f(8)}${f(4)}`;
     },
 
-    // Rainbow hue sweep — maps `t` (0..1) to a full hue cycle.
+    // Rainbow hue sweep    maps `t` (0..1) to a full hue cycle.
     // @param {number} t     0..1
     // @param {number} [s=100]
     // @param {number} [l=50]
@@ -98,7 +98,7 @@ const Color = {
         });
     },
 
-    // Return a color with alpha=0 approximation — blends toward a background color.
+    // Return a color with alpha=0 approximation    blends toward a background color.
     // Because the canvas only accepts opaque hex, this simulates transparency by
     // interpolating toward `bgHex`.
     // @param {string} hex

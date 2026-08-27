@@ -25,12 +25,12 @@ source/
 
   core/                  Framework-agnostic primitives
     math.js                clamp, rand, sleep, lerp, toRad, toDeg
-    vec2.js                Vec2 — 2-D vector math
-    vec3.js                Vec3 — 3-D vector math + perspective projection
-    color.js               Color — hex/RGB/HSL conversion & blending
-    frame-rate.js          FrameRate — fixed-FPS frame limiter
+    vec2.js                Vec2    2-D vector math
+    vec3.js                Vec3    3-D vector math + perspective projection
+    color.js               Color    hex/RGB/HSL conversion & blending
+    frame-rate.js          FrameRate    fixed-FPS frame limiter
 
-  shapes/                Point generators — each returns Vec2[]
+  shapes/                Point generators    each returns Vec2[]
     curves.js              line interpolation, quadratic/cubic Bézier, Catmull-Rom
     primitives.js           circle, ellipse, arc, rect, polygon, star
     parametric.js            spiral, Lissajous, rose, heart
@@ -39,13 +39,13 @@ source/
 
   font/                  Built-in stroke-based vector font
     glyphs.js               raw glyph stroke definitions
-    renderer.js              glyphStrokes() — glyph → pixel-space stroke points
+    renderer.js              glyphStrokes()    glyph -> pixel-space stroke points
     index.js                 barrel re-export
 
   network/               Transport-layer concerns
-    publish-queue.js        PublishQueue — concurrent publish pool w/ batching & retry
+    publish-queue.js        PublishQueue    concurrent publish pool w/ batching & retry
 
   bot/                   The public drawing bot
-    artist.js               Artist — composes shapes + font + PublishQueue into a
+    artist.js               Artist    composes shapes + font + PublishQueue into a
                              chainable draw*() API
 ```

@@ -1,5 +1,3 @@
-// the main publish-only drawing bot.
-
 'use strict';
 
 const PubNub = require('../pubnub.js');
@@ -33,7 +31,7 @@ class Artist {
     // @param {string}  [opts.userId]               Base userId (default: random).
     // @param {string}  [opts.style='#ff00ff']       Default hex color.
     // @param {string}  [opts.channel='coords']      PubNub channel name.
-    // @param {{ width, height }} [opts.resolution]  Virtual canvas size for pixel→norm conversion.
+    // @param {{ width, height }} [opts.resolution]  Virtual canvas size for pixel->norm conversion.
     // @param {string}  [opts.subscribeKey='demo']
     // @param {string}  [opts.publishKey='demo']
     // @param {string}  [opts.origin]
@@ -57,7 +55,7 @@ class Artist {
         concurrency         = 8,
         batchSize           = 1,
         pointDelayMs        = 0,
-        uniqueUserIdPerPath = false,
+        uniqueUserIdPerPath = true,
         onRateLimit         = null,
         onError             = null,
         onFlush             = null,
@@ -82,7 +80,7 @@ class Artist {
         });
     }
 
-    // ── Configuration ─────────────────────────────────────────────────────────
+    //  Configuration
 
     // Set the current draw color. Chainable.
     // @param {string} hex
@@ -107,7 +105,7 @@ class Artist {
     // Live queue stats: `{ pending, active, sent, failed }`.
     get stats() { return this._queue.stats; }
 
-    // ── Low-level send ────────────────────────────────────────────────────────
+    //  Low-level send
 
     // Convert pixel coordinates to normalized (0..1) space.
     // @param {{ x, y }} pt
@@ -135,7 +133,7 @@ class Artist {
         });
     }
 
-    // ── Path drawing ──────────────────────────────────────────────────────────
+    //  Path drawing
 
     // Draw a sequence of pre-computed points.
     //
@@ -165,7 +163,7 @@ class Artist {
     // Abort all pending work.
     abort() { this._queue.abort(); }
 
-    // ── Shape drawing API ─────────────────────────────────────────────────────
+    //  Shape drawing API
 
     // Draw a straight line from `p0` to `p1`.
     //
@@ -462,39 +460,6 @@ class Artist {
         const proj    = vertices.map(v => v.project(center, fov));
         for (const [i, j] of edges) {
             await this.drawLine(proj[i], proj[j], { pixels: true, spacing, ...opts });
-        }
-    }
-
-    // "Clear" the canvas by flooding it with the background color.
-    // Because the canvas is an event stream with no erase primitive,
-    // this draws over existing content with a dense grid of `bgColor` points.
-    //
-    // @param {object}  [opts]
-    // @param {string}  [opts.bgColor='#000000']
-    // @param {number}  [opts.spacing]   Dot spacing (default: 20 pixels if resolution-based).
-    // @returns {Promise<void>}
-    async clearCanvas({ bgColor = '#000000', spacing } = {}) {
-        const sp = spacing ?? 20;
-        const w  = this.resolution.width;
-        const h  = this.resolution.height;
-        const pts = fillRect({ x: 0, y: 0 }, w, h, sp);
-        const savedStyle = this.style;
-        this.style = bgColor;
-        await this.drawPath(pts, { pixels: true });
-        this.style = savedStyle;
-    }
-
-    // "Fade" by drawing a semi-transparent overlay of `bgColor` dots.
-    // Less aggressive than clearCanvas — lets old content bleed through.
-    //
-    // @param {object}  [opts]
-    // @param {string}  [opts.bgColor='#000000']
-    // @param {number}  [opts.passes=1]   Number of overlay passes (more = stronger fade).
-    // @param {number}  [opts.spacing=40] Sparser than clearCanvas for partial coverage.
-    // @returns {Promise<void>}
-    async fadeCanvas({ bgColor = '#000000', passes = 1, spacing = 0 } = {}) {
-        for (let p = 0; p < passes; p++) {
-            await this.clearCanvas({ bgColor, spacing });
         }
     }
 }

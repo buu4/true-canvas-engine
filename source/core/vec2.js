@@ -1,4 +1,4 @@
-// core/vec2.js — immutable-style 2-D vector.
+// core/vec2.js    immutable-style 2-D vector.
 
 'use strict';
 

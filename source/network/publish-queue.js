@@ -1,4 +1,4 @@
-// network/publish-queue.js — concurrent worker pool with batching, retry, monitoring.
+// concurrent worker pool with batching, retry, monitoring.
 
 'use strict';
 
@@ -90,7 +90,7 @@ class PublishQueue {
         return new Promise(resolve => this._idleWaiters.push(resolve));
     }
 
-    // ── Internal ──────────────────────────────────────────────────────────────
+    //  Internal
 
     async _publishWithRetry(jobs) {
         const channel = jobs[0].channel;
@@ -125,7 +125,7 @@ class PublishQueue {
                     return;
                 }
 
-                // Exponential backoff — extra penalty on rate limit
+                // Exponential backoff    extra penalty on rate limit
                 const delay = this.retryBaseMs * 2 ** (attempt - 1) * (isRateLimit ? 3 : 1);
                 await sleep(delay);
             }

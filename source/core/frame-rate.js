@@ -1,4 +1,4 @@
-// core/frame-rate.js — fixed-FPS frame limiter.
+// core/frame-rate.js    fixed-FPS frame limiter.
 
 'use strict';
 

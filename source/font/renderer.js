@@ -1,4 +1,4 @@
-// font/renderer.js — converts vector-font glyph definitions into pixel-space
+// font/renderer.js    converts vector-font glyph definitions into pixel-space
 // stroke points for drawing.
 
 'use strict';

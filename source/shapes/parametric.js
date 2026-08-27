@@ -51,7 +51,7 @@ function lissajousPoints(center, rx, ry, freqX = 3, freqY = 2, phase = Math.PI /
 //
 // @param {{ x, y }} center
 // @param {number}   radius
-// @param {number}  [k=3]       Petal count (odd k → k petals, even k → 2k petals).
+// @param {number}  [k=3]       Petal count (odd k -> k petals, even k -> 2k petals).
 // @param {number}  [steps=360]
 // @returns {Vec2[]}
 function rosePoints(center, radius, k = 3, steps = 360) {
