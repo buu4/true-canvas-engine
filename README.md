@@ -11,6 +11,12 @@ const bot = new Canvas.Artist({ style: '#ff0000' });
 await bot.drawLine({ x: 0.1, y: 0.1 }, { x: 0.9, y: 0.9 });
 ```
 
+## Running Example
+
+```bash
+node example/pyramid.js  # Pubnub 2026 Pyramid
+```
+
 ## Notes
 
 You don't need to understand all the things here, all you need to do is just knowing how to use `Canvas.Artist` properly. You can also look into the [Examples](example) folder to see all example of how it works!
