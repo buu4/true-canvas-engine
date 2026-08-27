@@ -205,7 +205,7 @@ class Artist {
     /**
      * Run multiple draw calls in parallel, each with its own isolated path context.
      * All draws share the same underlying PublishQueue so concurrency is still governed
-     * by the queue's worker pool — this only removes the serial wait between paths.
+     * by the queue's worker pool    this only removes the serial wait between paths.
      *
      * @param {Array<() => Promise<void>>} fns  Array of zero-argument async draw callbacks.
      * @returns {Promise<void>}  Resolves when every draw has flushed.
@@ -525,15 +525,17 @@ class Artist {
             let cx = marginX;
             for (const glyphChar of line) {
                 const { strokes } = glyphStrokes(glyphChar, cx, cy, fontSize, strokeSteps);
-                for (const stroke of strokes) {
-                    if (stroke.length > 0) {
-                        await this.drawPath(stroke, { pixels: true, ...pathOpts });
-                    }
-                }
+                this.drawParallel(
+                    strokes
+                        .filter(s => s.length > 0)
+                        .map(s => () => this.drawPath(s, { pixels: true, ...pathOpts }))
+                );
                 cx += adv;
             }
             cy += lh;
         }
+
+        await this._queue.flush();
     }
 
     /**
