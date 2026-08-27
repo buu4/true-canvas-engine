@@ -5,13 +5,15 @@
 
 const { Vec2 } = require('../core/vec2.js');
 
-// Rasterize a filled rectangle as a grid of scan-line points.
-//
-// @param {{ x, y }} topLeft
-// @param {number}   width
-// @param {number}   height
-// @param {number}  [spacing=0.01]  Distance between scan lines (and between points on each line).
-// @returns {Vec2[]}
+/**
+ * Rasterize a filled rectangle as a grid of scan-line points.
+ *
+ * @param {{ x, y }} topLeft
+ * @param {number}   width
+ * @param {number}   height
+ * @param {number}  [spacing=0.01]  Distance between scan lines (and between points on each line).
+ * @returns {Vec2[]}
+ */
 function fillRect(topLeft, width, height, spacing = 0.01) {
     const pts = [];
     const rows = Math.floor(height / spacing);
@@ -25,12 +27,14 @@ function fillRect(topLeft, width, height, spacing = 0.01) {
     return pts;
 }
 
-// Rasterize a filled circle (flood of dots arranged in scan-line order).
-//
-// @param {{ x, y }} center
-// @param {number}   radius
-// @param {number}  [spacing=0.01]
-// @returns {Vec2[]}
+/**
+ * Rasterize a filled circle (flood of dots arranged in scan-line order).
+ *
+ * @param {{ x, y }} center
+ * @param {number}   radius
+ * @param {number}  [spacing=0.01]
+ * @returns {Vec2[]}
+ */
 function fillCircle(center, radius, spacing = 0.01) {
     const c = Vec2.from(center);
     const pts = [];

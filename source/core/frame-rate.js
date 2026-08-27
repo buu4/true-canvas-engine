@@ -13,7 +13,9 @@ const { sleep } = require('./math.js');
 //     await fps.wait();   // waits only the time remaining in the frame budget
 //   }
 class FrameRate {
-    // @param {number} [targetFPS=30]
+    /**
+     * @param {number} [targetFPS=30]
+     */
     constructor(targetFPS = 30) {
         this.frameBudgetMs = 1000 / targetFPS;
         this._last = 0;

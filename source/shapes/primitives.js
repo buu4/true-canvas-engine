@@ -7,12 +7,14 @@ const { lerp } = require('../core/math.js');
 const { Vec2 } = require('../core/vec2.js');
 const { interpolate } = require('./curves.js');
 
-// Circle.
-//
-// @param {{ x, y }} center
-// @param {number}   radius
-// @param {number}  [steps=64]
-// @returns {Vec2[]}
+/**
+ * Circle.
+ *
+ * @param {{ x, y }} center
+ * @param {number}   radius
+ * @param {number}  [steps=64]
+ * @returns {Vec2[]}
+ */
 function circlePoints(center, radius, steps = 64) {
     const c = Vec2.from(center);
     const pts = [];
@@ -23,14 +25,16 @@ function circlePoints(center, radius, steps = 64) {
     return pts;
 }
 
-// Ellipse.
-//
-// @param {{ x, y }} center
-// @param {number}   rx      Radius on X axis.
-// @param {number}   ry      Radius on Y axis.
-// @param {number}  [rotation=0]  Rotation in radians.
-// @param {number}  [steps=64]
-// @returns {Vec2[]}
+/**
+ * Ellipse.
+ *
+ * @param {{ x, y }} center
+ * @param {number}   rx      Radius on X axis.
+ * @param {number}   ry      Radius on Y axis.
+ * @param {number}  [rotation=0]  Rotation in radians.
+ * @param {number}  [steps=64]
+ * @returns {Vec2[]}
+ */
 function ellipsePoints(center, rx, ry, rotation = 0, steps = 64) {
     const c  = Vec2.from(center);
     const cos = Math.cos(rotation);
@@ -45,14 +49,16 @@ function ellipsePoints(center, rx, ry, rotation = 0, steps = 64) {
     return pts;
 }
 
-// Circular arc.
-//
-// @param {{ x, y }} center
-// @param {number}   radius
-// @param {number}   startAngle  Start angle in radians.
-// @param {number}   endAngle    End angle in radians.
-// @param {number}  [steps=32]
-// @returns {Vec2[]}
+/**
+ * Circular arc.
+ *
+ * @param {{ x, y }} center
+ * @param {number}   radius
+ * @param {number}   startAngle  Start angle in radians.
+ * @param {number}   endAngle    End angle in radians.
+ * @param {number}  [steps=32]
+ * @returns {Vec2[]}
+ */
 function arcPoints(center, radius, startAngle, endAngle, steps = 32) {
     const c = Vec2.from(center);
     const pts = [];
@@ -63,13 +69,15 @@ function arcPoints(center, radius, startAngle, endAngle, steps = 32) {
     return pts;
 }
 
-// Axis-aligned rectangle (outline).
-//
-// @param {{ x, y }} topLeft
-// @param {number}   width
-// @param {number}   height
-// @param {number}  [stepsPerSide=10]
-// @returns {Vec2[]}
+/**
+ * Axis-aligned rectangle (outline).
+ *
+ * @param {{ x, y }} topLeft
+ * @param {number}   width
+ * @param {number}   height
+ * @param {number}  [stepsPerSide=10]
+ * @returns {Vec2[]}
+ */
 function rectPoints(topLeft, width, height, stepsPerSide = 10) {
     const { x, y } = topLeft;
     const corners = [
@@ -89,13 +97,15 @@ function rectPoints(topLeft, width, height, stepsPerSide = 10) {
     return pts;
 }
 
-// Regular polygon.
-//
-// @param {{ x, y }} center
-// @param {number}   radius
-// @param {number}   sides       Number of sides (≥ 3).
-// @param {number}  [rotation=0] Rotation in radians.
-// @returns {Vec2[]}
+/**
+ * Regular polygon.
+ *
+ * @param {{ x, y }} center
+ * @param {number}   radius
+ * @param {number}   sides       Number of sides (≥ 3).
+ * @param {number}  [rotation=0] Rotation in radians.
+ * @returns {Vec2[]}
+ */
 function polygonPoints(center, radius, sides, rotation = 0) {
     if (sides < 3) throw new Error('polygon needs at least 3 sides');
     const c = Vec2.from(center);
@@ -107,14 +117,16 @@ function polygonPoints(center, radius, sides, rotation = 0) {
     return pts;
 }
 
-// Star / asterisk shape.
-//
-// @param {{ x, y }} center
-// @param {number}   outerRadius
-// @param {number}   innerRadius
-// @param {number}  [points=5]
-// @param {number}  [rotation=0]  Radians. Default points a tip upward.
-// @returns {Vec2[]}
+/**
+ * Star / asterisk shape.
+ *
+ * @param {{ x, y }} center
+ * @param {number}   outerRadius
+ * @param {number}   innerRadius
+ * @param {number}  [points=5]
+ * @param {number}  [rotation=0]  Radians. Default points a tip upward.
+ * @returns {Vec2[]}
+ */
 function starPoints(center, outerRadius, innerRadius, points = 5, rotation = -Math.PI / 2) {
     const c = Vec2.from(center);
     const total = points * 2;

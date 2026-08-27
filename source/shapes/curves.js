@@ -6,13 +6,15 @@
 const { clamp } = require('../core/math.js');
 const { Vec2 } = require('../core/vec2.js');
 
-// Sample points along a straight line using adaptive spacing.
-//
-// @param {{ x, y }}  p0
-// @param {{ x, y }}  p1
-// @param {number}   [spacing=0.01]    Step size (same units as coordinates).
-// @param {number}   [maxPoints=512]   Hard cap on returned points.
-// @returns {Vec2[]}
+/**
+ * Sample points along a straight line using adaptive spacing.
+ *
+ * @param {{ x, y }}  p0
+ * @param {{ x, y }}  p1
+ * @param {number}   [spacing=0.01]    Step size (same units as coordinates).
+ * @param {number}   [maxPoints=512]   Hard cap on returned points.
+ * @returns {Vec2[]}
+ */
 function interpolate(p0, p1, spacing = 0.01, maxPoints = 512) {
     const a = Vec2.from(p0);
     const b = Vec2.from(p1);
@@ -23,13 +25,15 @@ function interpolate(p0, p1, spacing = 0.01, maxPoints = 512) {
     return pts;
 }
 
-// Quadratic Bézier curve (one control point).
-//
-// @param {{ x, y }} p0   Start point.
-// @param {{ x, y }} ctrl Control point.
-// @param {{ x, y }} p1   End point.
-// @param {number}  [steps=40]
-// @returns {Vec2[]}
+/**
+ * Quadratic Bézier curve (one control point).
+ *
+ * @param {{ x, y }} p0   Start point.
+ * @param {{ x, y }} ctrl Control point.
+ * @param {{ x, y }} p1   End point.
+ * @param {number}  [steps=40]
+ * @returns {Vec2[]}
+ */
 function quadraticCurve(p0, ctrl, p1, steps = 40) {
     const a = Vec2.from(p0), c = Vec2.from(ctrl), b = Vec2.from(p1);
     const pts = [];
@@ -44,14 +48,16 @@ function quadraticCurve(p0, ctrl, p1, steps = 40) {
     return pts;
 }
 
-// Cubic Bézier curve (two control points).
-//
-// @param {{ x, y }} p0    Start.
-// @param {{ x, y }} ctrl1 First control point.
-// @param {{ x, y }} ctrl2 Second control point.
-// @param {{ x, y }} p1    End.
-// @param {number}  [steps=40]
-// @returns {Vec2[]}
+/**
+ * Cubic Bézier curve (two control points).
+ *
+ * @param {{ x, y }} p0    Start.
+ * @param {{ x, y }} ctrl1 First control point.
+ * @param {{ x, y }} ctrl2 Second control point.
+ * @param {{ x, y }} p1    End.
+ * @param {number}  [steps=40]
+ * @returns {Vec2[]}
+ */
 function cubicCurve(p0, ctrl1, ctrl2, p1, steps = 40) {
     const a = Vec2.from(p0), b = Vec2.from(ctrl1), c = Vec2.from(ctrl2), d = Vec2.from(p1);
     const pts = [];
@@ -68,12 +74,14 @@ function cubicCurve(p0, ctrl1, ctrl2, p1, steps = 40) {
     return pts;
 }
 
-// Catmull-Rom spline through a sequence of control points.
-// Produces smooth curves without manual control-point placement.
-//
-// @param {{ x, y }[]} pts   At least 4 points.
-// @param {number}    [steps=20]  Segments between each pair of inner points.
-// @returns {Vec2[]}
+/**
+ * Catmull-Rom spline through a sequence of control points.
+ * Produces smooth curves without manual control-point placement.
+ *
+ * @param {{ x, y }[]} pts   At least 4 points.
+ * @param {number}    [steps=20]  Segments between each pair of inner points.
+ * @returns {Vec2[]}
+ */
 function catmullRom(pts, steps = 20) {
     if (pts.length < 4) throw new Error('catmullRom needs at least 4 points');
     const v = pts.map(Vec2.from);

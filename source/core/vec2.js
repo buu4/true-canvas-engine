@@ -7,8 +7,10 @@ const { lerp } = require('./math.js');
 // 2-D vector with common math operations.
 // All arithmetic methods return a NEW Vec2 (non-mutating).
 class Vec2 {
-    // @param {number} [x=0]
-    // @param {number} [y=0]
+    /**
+     * @param {number} [x=0]
+     * @param {number} [y=0]
+     */
     constructor(x = 0, y = 0) {
         this.x = x;
         this.y = y;
@@ -56,17 +58,21 @@ class Vec2 {
         return len === 0 ? new Vec2(0, 0) : this.scale(1 / len);
     }
 
-    // Rotate around the origin by `angle` radians.
-    // @param {number} angle  Radians.
+    /**
+     * Rotate around the origin by `angle` radians.
+     * @param {number} angle  Radians.
+     */
     rotate(angle) {
         const cos = Math.cos(angle);
         const sin = Math.sin(angle);
         return new Vec2(this.x * cos - this.y * sin, this.x * sin + this.y * cos);
     }
 
-    // Rotate around a pivot point.
-    // @param {Vec2}   pivot
-    // @param {number} angle  Radians.
+    /**
+     * Rotate around a pivot point.
+     * @param {Vec2}   pivot
+     * @param {number} angle  Radians.
+     */
     rotateAround(pivot, angle) {
         return this.sub(pivot).rotate(angle).add(pivot);
     }
@@ -74,15 +80,19 @@ class Vec2 {
     // Linear interpolation toward `v` at parameter `t` (0..1).
     lerp(v, t) { return new Vec2(lerp(this.x, v.x, t), lerp(this.y, v.y, t)); }
 
-    // Reflect this vector across a normal `n` (must be unit length).
-    // @param {Vec2} n  Unit normal.
+    /**
+     * Reflect this vector across a normal `n` (must be unit length).
+     * @param {Vec2} n  Unit normal.
+     */
     reflect(n) { return this.sub(n.scale(2 * this.dot(n))); }
 
     // Perpendicular vector (rotated 90° CCW).
     perp() { return new Vec2(-this.y, this.x); }
 
-    // Project this vector onto `v`.
-    // @param {Vec2} v
+    /**
+     * Project this vector onto `v`.
+     * @param {Vec2} v
+     */
     projectOnto(v) {
         const d = v.dot(v);
         return d === 0 ? new Vec2(0, 0) : v.scale(this.dot(v) / d);
@@ -95,14 +105,18 @@ class Vec2 {
 
     toString() { return `Vec2(${this.x.toFixed(4)}, ${this.y.toFixed(4)})`; }
 
-    // Create a Vec2 from any {x,y} object.
-    // @param {{ x: number, y: number }} obj
-    // @returns {Vec2}
+    /**
+     * Create a Vec2 from any {x,y} object.
+     * @param {{ x: number, y: number }} obj
+     * @returns {Vec2}
+     */
     static from(obj) { return new Vec2(obj.x, obj.y); }
 
-    // Create a unit vector pointing at `angle` radians.
-    // @param {number} angle
-    // @returns {Vec2}
+    /**
+     * Create a unit vector pointing at `angle` radians.
+     * @param {number} angle
+     * @returns {Vec2}
+     */
     static fromAngle(angle) { return new Vec2(Math.cos(angle), Math.sin(angle)); }
 
     // Zero vector.
