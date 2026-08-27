@@ -87,11 +87,11 @@ async function main() {
 
         const rad             = Canvas.toRad(angle);
         const rotatedVertices = vertices.map(v => v.rotateY(rad).rotateX(rad * 0.5));
-        const points2D        = rotatedVertices.map(v => v.project(CENTER_POS, FOV_DISTANCE));
 
-        for (const [i, j] of edges) {
-            await bot.drawLine(points2D[i], points2D[j], { pixels: true, spacing: 16 });
-        }
+        await bot.drawWireframe(rotatedVertices, edges, CENTER_POS, {
+            fov: FOV_DISTANCE,
+            spacing: 18
+        });
 
         angle = (angle + 20) % 360;
         await Canvas.sleep(LOOP_DELAY);

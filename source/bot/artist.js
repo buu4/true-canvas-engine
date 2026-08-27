@@ -24,7 +24,6 @@ const {
     fillRect,
     fillCircle,
 } = require('../shapes/index.js');
-const { Edges } = require('../core/edges.js');
 
 // Publish-only bot that draws shapes on the PubNub canvas.
 class Artist {
@@ -494,12 +493,17 @@ class Artist {
     }
 
     /**
+     * @typedef {object} EdgeOptions
+     * @property {string} [style]
+     */
+
+    /**
     * Draw a 3-D wireframe mesh defined by vertices and edges.
     * Handles projection, rotation, and edge drawing in one call.
     *
-    * @param {Vec3[]}      vertices    Array of 3-D points.
-    * @param {Edges[]}     edges  Pairs of vertex indices.
-    * @param {{ x, y }}    center      2-D center for projection (pixels).
+    * @param {Vec3[]}      vertices            Array of 3-D points.
+    * @param {[number, number, EdgeOptions?][]}  edges  Pairs of vertex indices.
+    * @param {{ x, y }}    center               2-D center for projection (pixels).
     * @param {object}     [opts]
     * @param {number}     [opts.fov=600]       Field-of-view distance.
     * @param {number}     [opts.spacing=25]    Line density (pixels).
